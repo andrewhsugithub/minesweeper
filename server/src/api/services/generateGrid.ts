@@ -1,4 +1,4 @@
-﻿import { directions } from "constants.js";
+﻿import { directions } from "../../constants.js";
 import { generateMines } from "./mine.js";
 
 const countNeighborMines = (i: number, j: number, grid: Cell[][]) => {

@@ -1,4 +1,4 @@
-﻿import { t } from "@/utils/trpc.js";
+﻿import { t } from "../../utils/trpc.js";
 import { z } from "zod";
 import {
   checkGameHasRevealedAlready,

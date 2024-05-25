@@ -1,6 +1,6 @@
-﻿import { t } from "@/utils/trpc.js";
-import { z } from "zod";
+﻿import { z } from "zod";
 import { generateGrid } from "../services/generateGrid.js";
+import { t } from "../../utils/trpc.js";
 
 export const boardRouter = t.router({
   generateGame: t.procedure

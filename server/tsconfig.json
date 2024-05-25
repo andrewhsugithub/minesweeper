@@ -9,26 +9,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16",
-    "baseUrl": "src/",
-    "paths": {
-      "@/services/*": ["services/*"],
-      "@/models/*": ["models/*"],
-      "@/utils/*": ["utils/*"],
-      "@/config/*": ["config/*"],
-      "@/types/*": ["types/*"],
-      "@/middlewares/*": ["middlewares/*"],
-      "@/controllers/*": ["controllers/*"],
-      "@/routes/*": ["routes/*"],
-      "@/database/*": ["database/*"],
-      "@/errors/*": ["errors/*"],
-      "@/validations/*": ["validations/*"],
-      "@/helpers/*": ["helpers/*"],
-      "@/constants/*": ["constants/*"],
-      "@/interfaces/*": ["interfaces/*"],
-      "@/repositories/*": ["repositories/*"],
-      "@/api/*": ["api/*"]
-    }
+    "moduleResolution": "node16"
   },
   "include": ["src/**/*.ts"]
 }

@@ -1,8 +1,8 @@
 ﻿import express from "express";
 import cors from "cors";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { createContext } from "@/utils/context.js";
-import { appRouter } from "@/api/root.js";
+import { appRouter } from "./api/_app.js";
+import { createContext } from "./utils/context.js";
 
 async function main() {
   const app = express();

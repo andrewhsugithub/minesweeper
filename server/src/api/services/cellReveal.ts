@@ -1,4 +1,4 @@
-﻿import { directions } from "constants.js";
+﻿import { directions } from "../../constants.js";
 
 export const cellReveal = (r: number, c: number, gridObject: GridObject) => {
   gridObject.firstCellSelected = true;

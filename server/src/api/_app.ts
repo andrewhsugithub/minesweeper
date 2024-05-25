@@ -1,7 +1,7 @@
-﻿import { t } from "@/utils/trpc.js";
+﻿import { t } from "../utils/trpc.js";
 import { boardRouter } from "./router/boardRouter.js";
-import { flagRouter } from "./router/flagRouter.js";
 import { cellRouter } from "./router/cellRouter.js";
+import { flagRouter } from "./router/flagRouter.js";
 
 export const appRouter = t.router({
   board: boardRouter,
