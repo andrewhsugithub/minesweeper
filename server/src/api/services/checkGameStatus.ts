@@ -1,6 +1,4 @@
-﻿import { gridObject } from "./grid.js";
-
-export const checkGameStatus = () => {
+﻿export const checkGameStatus = (gridObject: GridObject) => {
   // let hasWon = true;
   // grid.forEach((row, i) =>
   //   row.map((cell: Cell) => {
@@ -14,6 +12,6 @@ export const checkGameStatus = () => {
   );
 };
 
-export const checkGameHasRevealedAlready = () => {
+export const checkGameHasRevealedAlready = (gridObject: GridObject) => {
   return gridObject.firstCellSelected;
 };

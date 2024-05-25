@@ -1,7 +1,6 @@
 ﻿import { directions } from "constants.js";
-import { gridObject } from "./grid.js";
 
-export const cellReveal = (r: number, c: number) => {
+export const cellReveal = (r: number, c: number, gridObject: GridObject) => {
   gridObject.firstCellSelected = true;
   const grid = gridObject.grid;
   console.log("cell reveal", r, c);

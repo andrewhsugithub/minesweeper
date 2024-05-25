@@ -1,6 +1,5 @@
-﻿import { directions } from "../constants.js";
+﻿import { directions } from "constants.js";
 import { generateMines } from "./mine.js";
-import { gridObject } from "./grid.js";
 
 const countNeighborMines = (i: number, j: number, grid: Cell[][]) => {
   const [m, n] = [grid.length, grid[0]!.length];
@@ -20,7 +19,12 @@ const countNeighborMines = (i: number, j: number, grid: Cell[][]) => {
   }
 };
 
-export const generateGrid = (rows: number, cols: number, numMines: number) => {
+export const generateGrid = (
+  rows: number,
+  cols: number,
+  numMines: number,
+  gridObject: GridObject
+) => {
   console.log("generate grid", rows, cols, numMines - 1);
   // generate mines
   const mineStatus = generateMines(rows, cols, numMines);

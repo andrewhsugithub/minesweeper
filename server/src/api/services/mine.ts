@@ -1,6 +1,4 @@
-﻿import { gridObject } from "./grid.js";
-
-let redundantMineCell: [number, number];
+﻿let redundantMineCell: [number, number];
 
 export const generateMines = (rows: number, cols: number, numMines: number) => {
   // generate mines
@@ -27,7 +25,11 @@ export const generateMines = (rows: number, cols: number, numMines: number) => {
   });
 };
 
-export const disableMine = (row: number, col: number) => {
+export const disableMine = (
+  row: number,
+  col: number,
+  gridObject: GridObject
+) => {
   const grid = gridObject.grid;
 
   console.log("disable mine", row, col);
@@ -48,7 +50,11 @@ export const disableMine = (row: number, col: number) => {
   grid[r]![c]!.isRedundantMine = false;
 };
 
-export const checkCellIsMine = (row: number, col: number) => {
+export const checkCellIsMine = (
+  row: number,
+  col: number,
+  gridObject: GridObject
+) => {
   const grid = gridObject.grid;
 
   return grid[row]![col]!.isMine;
