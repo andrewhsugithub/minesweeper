@@ -10,7 +10,7 @@ import {
 } from "@/services/checkGameStatus.js";
 import { flag } from "@/services/placeFlag.js";
 import { checkCellStatus } from "@/services/checkCellStatus.js";
-import { gridObject } from "./services/grid.js";
+import { gridObject } from "@/services/grid.js";
 
 async function main() {
   const app = express();
@@ -28,18 +28,15 @@ async function main() {
     res.send("Hello World!");
   });
 
-  app.get(
+  app.post(
     "/api/v1/generate-game",
     (req, res, next) => {
-      if (Object.keys(req.query).length !== 3)
-        return res.status(400).json({ msg: "Invalid query parameters" });
+      if (Object.keys(req.body).length !== 3)
+        return res.status(400).json({ msg: "Invalid parameters" });
 
-      // const numMines = req.query.numMines;
-      // const numRows = req.query.numRows;
-      // const numCols = req.query.numCols;
-      const { numMines, numRows, numCols } = req.query;
+      const { numMines, numRows, numCols } = req.body;
       if (!numMines || !numRows || !numCols)
-        return res.status(400).json({ msg: "Invalid query parameters" });
+        return res.status(400).json({ msg: "Invalid parameters" });
       console.log(numMines, numRows, numCols);
 
       // generate game with mines+1 (for faster performance, we can disable the mine that is the +1)
@@ -50,18 +47,16 @@ async function main() {
     sendGrid
   );
 
-  app.get(
+  app.post(
     "/api/v1/cell-reveal",
     (req, res, next) => {
-      if (
-        Object.keys(req.query).length < 2 ||
-        Object.keys(req.query).length > 3
-      )
-        return res.status(400).json({ msg: "Invalid query parameters" });
+      if (Object.keys(req.body).length !== 2)
+        return res.status(400).json({ msg: "Invalid parameters" });
 
-      const { row, col, first } = req.query;
+      const { row, col } = req.body;
+      const { first } = req.query;
       if (!row || !col)
-        return res.status(400).json({ msg: "Invalid query parameters" });
+        return res.status(400).json({ msg: "Invalid parameters" });
       console.log("in cell reveal api", row, col);
 
       // check if first cell is clicked, if yes, disable the mine, else continue
@@ -95,15 +90,15 @@ async function main() {
     sendGrid
   );
 
-  app.get(
+  app.post(
     "/api/v1/flag",
     (req, res, next) => {
-      if (Object.keys(req.query).length !== 2)
-        return res.status(400).json({ msg: "Invalid query parameters" });
+      if (Object.keys(req.body).length !== 2)
+        return res.status(400).json({ msg: "Invalid parameters" });
 
-      const { row, col } = req.query;
+      const { row, col } = req.body;
       if (!row || !col)
-        return res.status(400).json({ msg: "Invalid query parameters" });
+        return res.status(400).json({ msg: "Invalid parameters" });
       console.log("flag", row, col);
 
       // place flag or unflag
