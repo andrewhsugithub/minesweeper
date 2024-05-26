@@ -1,4 +1,4 @@
-﻿type Cell = {
+﻿type CellType = {
   row: number;
   col: number;
   // value: "*" | "M" | number;
@@ -16,5 +16,5 @@ type GridObject = {
   numberOfRevealedCells: number;
   grid: Cell[][];
   firstCellSelected: boolean;
-  redundantMineCell?: [number, number];
+  redundantMineCell: [number, number];
 };

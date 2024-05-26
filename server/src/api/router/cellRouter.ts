@@ -1,41 +1,55 @@
-﻿import { t } from "../../utils/trpc.js";
+﻿import { publicProcedure, router } from "../../utils/trpc.js";
 import { z } from "zod";
 import {
   checkGameHasRevealedAlready,
   checkGameStatus,
 } from "../services/checkGameStatus.js";
 import { checkCellIsMine, disableMine } from "../services/mine.js";
-import { checkCellStatus } from "../services/checkCellStatus.js";
 import { cellReveal } from "../services/cellReveal.js";
+import { validateRangeMiddleware } from "../middlewares/validateRange.js";
+import { TRPCError } from "@trpc/server";
+import { checkCanReveal } from "../services/cell.js";
 
-export const cellRouter = t.router({
-  cellReveal: t.procedure
+export const cellRouter = router({
+  cellReveal: publicProcedure
     .input(
       z.object({
-        row: z.number(),
-        col: z.number(),
-        first: z.boolean().optional(),
+        row: z.number().gte(0),
+        col: z.number().gte(0),
+        first: z.boolean().optional(), // if it is the first cell selected
       })
     )
+    .use(validateRangeMiddleware)
     .mutation(({ input, ctx }) => {
       const { gridObject } = ctx;
 
+      // if first cell is selected and the game has not been revealed yet, disable the mine
       if (input.first && !checkGameHasRevealedAlready(gridObject)) {
-        disableMine(input.row, input.col, gridObject);
+        disableMine(input.row, input.col, gridObject); // if the first cell selected is a mine, disable it, else disable the redundant mine
       } else if (!input.first && !checkGameHasRevealedAlready(gridObject)) {
         disableMine(input.row, input.col, gridObject);
       }
 
+      // if the cell is a mine, game over
       if (checkCellIsMine(input.row, input.col, gridObject)) {
-        return { msg: "Game Over!", grid: gridObject.grid };
+        return { gameStatus: true, hasWon: false, grid: gridObject.grid };
       }
 
-      if (checkCellStatus(input.row, input.col, gridObject)) {
-        return { msg: "Cell already revealed", grid: gridObject.grid };
+      // if the cell has already been revealed, throw TRPCError
+      if (checkCanReveal(input.row, input.col, gridObject)) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Cell has already been revealed",
+        });
       }
 
       cellReveal(input.row, input.col, gridObject);
 
-      return { hasWon: checkGameStatus(gridObject), grid: gridObject.grid };
+      const checkIfWin = checkGameStatus(gridObject);
+      return {
+        gameStatus: checkIfWin,
+        hasWon: checkIfWin,
+        grid: gridObject.grid,
+      };
     }),
 });

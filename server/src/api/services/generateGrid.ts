@@ -1,23 +1,4 @@
-﻿import { directions } from "../../constants.js";
-import { generateMines } from "./mine.js";
-
-const countNeighborMines = (i: number, j: number, grid: Cell[][]) => {
-  const [m, n] = [grid.length, grid[0]!.length];
-
-  if (grid[i]![j]!.isMine) {
-    directions.forEach(([dx, dy]) => {
-      const [newI, newJ] = [i + dx!, j + dy!];
-      if (
-        newI >= 0 &&
-        newI < m &&
-        newJ >= 0 &&
-        newJ < n &&
-        !grid[newI]![newJ]!.isMine
-      )
-        grid[newI]![newJ]!.neighboringMines++;
-    });
-  }
-};
+﻿import { countNeighborMines, generateMines } from "./mine.js";
 
 export const generateGrid = (
   rows: number,
@@ -25,13 +6,16 @@ export const generateGrid = (
   numMines: number,
   gridObject: GridObject
 ) => {
+  console.log();
   console.log("generate grid", rows, cols, numMines - 1);
   // generate mines
-  const mineStatus = generateMines(rows, cols, numMines);
+  const mineStatus = generateMines(rows, cols, numMines, gridObject);
   // generate map
   const grid = Array.from({ length: +rows }, (_, i) =>
     Array.from({ length: +cols }, (_, j) => {
       const cell: Cell = {
+        row: i,
+        col: j,
         // value: "*",
         hasFlag: false,
         hasRevealed: false,

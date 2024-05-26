@@ -1,6 +1,11 @@
-﻿let redundantMineCell: [number, number];
+﻿import { directions } from "../../constants.js";
 
-export const generateMines = (rows: number, cols: number, numMines: number) => {
+export const generateMines = (
+  rows: number,
+  cols: number,
+  numMines: number,
+  gridObject: GridObject
+) => {
   // generate mines
   const mines = new Set<number>();
   while (mines.size < numMines) {
@@ -10,7 +15,10 @@ export const generateMines = (rows: number, cols: number, numMines: number) => {
   // choose a random mine to disable
   const redundantMineIdx = Math.floor(Math.random() * numMines);
   const redundantMine = Array.from(mines)[redundantMineIdx]!;
-  redundantMineCell = [Math.floor(redundantMine / cols), redundantMine % cols];
+  gridObject.redundantMineCell = [
+    Math.floor(redundantMine / cols),
+    redundantMine % cols,
+  ];
   console.log(
     "redundant mine",
     redundantMine,
@@ -33,11 +41,9 @@ export const disableMine = (
   const grid = gridObject.grid;
 
   console.log("disable mine", row, col);
-  // console.log("row", grid[row]);
-  // console.log("col", grid[row]![col]);
   let [r, c] = [row, col];
   // check if first cell is mine, if not disable the redundant mine
-  if (!grid[row]![col]!.isMine) [r, c] = redundantMineCell;
+  if (!grid[row]![col]!.isMine) [r, c] = gridObject.redundantMineCell!;
 
   const [m, n] = [grid.length, grid[0]!.length];
   for (let i = r - 1; i < r + 2; i++) {
@@ -48,6 +54,7 @@ export const disableMine = (
   }
   grid[r]![c]!.isMine = false;
   grid[r]![c]!.isRedundantMine = false;
+  countNeighborMines(r, c, grid);
 };
 
 export const checkCellIsMine = (
@@ -58,4 +65,22 @@ export const checkCellIsMine = (
   const grid = gridObject.grid;
 
   return grid[row]![col]!.isMine;
+};
+
+export const countNeighborMines = (i: number, j: number, grid: Cell[][]) => {
+  const [m, n] = [grid.length, grid[0]!.length];
+
+  if (!grid[i]![j]!.isMine) {
+    directions.forEach(([dx, dy]) => {
+      const [newI, newJ] = [i + dx!, j + dy!];
+      if (
+        newI >= 0 &&
+        newI < m &&
+        newJ >= 0 &&
+        newJ < n &&
+        grid[newI]![newJ]!.isMine
+      )
+        grid[i]![j]!.neighboringMines++;
+    });
+  }
 };
