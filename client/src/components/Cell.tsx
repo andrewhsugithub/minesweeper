@@ -8,15 +8,15 @@ interface CellProps {
 }
 
 const colorMap: { [key: number]: string } = {
-  0: "text-gray-300",
-  1: "text-blue-300",
-  2: "text-green-300",
-  3: "text-red-300",
-  4: "text-purple-300",
-  5: "text-yellow-300",
-  6: "text-blue-600",
-  7: "text-green-600",
-  8: "text-red-600",
+  0: "text-white",
+  1: "text-blue-600",
+  2: "text-green-600",
+  3: "text-red-600",
+  4: "text-purple-600",
+  5: "text-yellow-600",
+  6: "text-blue-800",
+  7: "text-green-800",
+  8: "text-red-800",
 };
 
 const Cell = ({ data, cellMutation, flagMutation, cannotClick }: CellProps) => {

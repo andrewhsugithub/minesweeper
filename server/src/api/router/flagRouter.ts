@@ -1,10 +1,9 @@
 ﻿import { publicProcedure, router } from "../../utils/trpc.js";
 import { z } from "zod";
-import { checkGameStatus } from "../services/checkGameStatus.js";
-import { flag } from "../services/placeFlag.js";
 import { validateRangeMiddleware } from "../middlewares/validateRange.js";
 import { TRPCError } from "@trpc/server";
-import { checkCanPlaceFlag } from "../services/cell.js";
+import { checkCanPlaceFlag, placeFlag } from "../services/cell.js";
+import { checkGameStatus } from "../services/board.js";
 
 export const flagRouter = router({
   flag: publicProcedure
@@ -26,12 +25,12 @@ export const flagRouter = router({
         });
       }
 
-      flag(input.row, input.col, gridObject);
+      placeFlag(input.row, input.col, gridObject);
 
-      const checkIfWin = checkGameStatus(gridObject);
+      // const checkIfWin = checkGameStatus(gridObject);
       return {
-        gameStatus: checkIfWin,
-        hasWon: checkIfWin,
+        gameStatus: false,
+        hasWon: false,
         grid: gridObject.grid,
       };
     }),

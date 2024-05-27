@@ -1,6 +1,6 @@
 ﻿import { z } from "zod";
-import { generateGrid } from "../services/generateGrid.js";
 import { publicProcedure, router } from "../../utils/trpc.js";
+import { generateGrid } from "../services/board.js";
 
 export const boardRouter = router({
   generateGame: publicProcedure

@@ -1,14 +1,14 @@
 ﻿import { publicProcedure, router } from "../../utils/trpc.js";
 import { z } from "zod";
+
+import { checkCellIsMine, disableMine } from "../services/mine.js";
+import { validateRangeMiddleware } from "../middlewares/validateRange.js";
+import { TRPCError } from "@trpc/server";
+import { cellReveal, checkCanReveal } from "../services/cell.js";
 import {
   checkGameHasRevealedAlready,
   checkGameStatus,
-} from "../services/checkGameStatus.js";
-import { checkCellIsMine, disableMine } from "../services/mine.js";
-import { cellReveal } from "../services/cellReveal.js";
-import { validateRangeMiddleware } from "../middlewares/validateRange.js";
-import { TRPCError } from "@trpc/server";
-import { checkCanReveal } from "../services/cell.js";
+} from "../services/board.js";
 
 export const cellRouter = router({
   cellReveal: publicProcedure

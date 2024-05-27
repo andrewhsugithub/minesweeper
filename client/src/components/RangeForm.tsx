@@ -25,6 +25,8 @@ const RangeForm = ({ handleUpdateGrid }: RangeFormProps) => {
             id="rows"
             value={rows}
             onChange={(e) => setRows(+e.target.value)}
+            min={1}
+            max={50}
           />
         </div>
         <div className="grid w-full max-w-sm items-center gap-x-1.5 grid-cols-2">
@@ -37,6 +39,8 @@ const RangeForm = ({ handleUpdateGrid }: RangeFormProps) => {
             id="cols"
             value={cols}
             onChange={(e) => setCols(+e.target.value)}
+            min={1}
+            max={50}
           />
         </div>
         <div className="grid w-full max-w-sm items-center gap-x-1.5 grid-cols-2">

@@ -39,3 +39,24 @@ export const generateGrid = (
   gridObject.numberOfRevealedCells = 0;
   gridObject.firstCellSelected = false;
 };
+
+// if win return true, else return false
+export const checkGameStatus = (gridObject: GridObject) => {
+  const [rows, cols] = [gridObject.rows, gridObject.cols];
+  console.log(
+    "check game status",
+    rows,
+    cols,
+    gridObject.numberOfRevealedCells,
+    gridObject.numberOfMines,
+    rows * cols - gridObject.numberOfRevealedCells === gridObject.numberOfMines
+  );
+
+  return (
+    rows * cols - gridObject.numberOfRevealedCells === gridObject.numberOfMines
+  );
+};
+
+export const checkGameHasRevealedAlready = (gridObject: GridObject) => {
+  return gridObject.firstCellSelected;
+};
