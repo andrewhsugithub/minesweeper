@@ -17,7 +17,6 @@ const Board = ({ board }: BoardProps) => {
   const cellMutation = trpc.cell.cellReveal.useMutation();
 
   const mutateFlag = (row: number, col: number) => {
-    console.log("flag", row, col);
     flagMutation.mutateAsync({
       row,
       col,
@@ -25,7 +24,6 @@ const Board = ({ board }: BoardProps) => {
   };
 
   const mutateCell = (row: number, col: number) => {
-    console.log("cell", row, col);
     cellMutation.mutateAsync({
       row,
       col,
@@ -34,19 +32,15 @@ const Board = ({ board }: BoardProps) => {
   };
 
   useEffect(() => {
-    console.log("in flag");
     if (!flagMutation.data) return;
     const data = flagMutation.data;
-    console.log("flagMutation", data);
     setEndGame({ end: data!.gameStatus, win: data!.hasWon });
     setGameBoard(data!.grid.map((row) => [...row]));
   }, [flagMutation.data]);
 
   useEffect(() => {
-    console.log("in cell");
     if (!cellMutation.data) return;
     const data = cellMutation.data;
-    console.log("cellMutation", data);
     setEndGame({ end: data!.gameStatus, win: data!.hasWon });
     setGameBoard(data!.grid.map((row) => [...row]));
   }, [cellMutation.data]);

@@ -6,8 +6,6 @@ export const generateGrid = (
   numMines: number,
   gridObject: GridObject
 ) => {
-  console.log();
-  console.log("generate grid", rows, cols, numMines - 1);
   // generate mines
   const mineStatus = generateMines(rows, cols, numMines, gridObject);
   // generate map

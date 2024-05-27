@@ -3,7 +3,6 @@ import { z } from "zod";
 import { validateRangeMiddleware } from "../middlewares/validateRange.js";
 import { TRPCError } from "@trpc/server";
 import { checkCanPlaceFlag, placeFlag } from "../services/cell.js";
-import { checkGameStatus } from "../services/board.js";
 
 export const flagRouter = router({
   flag: publicProcedure
