@@ -7,7 +7,10 @@ export const checkCanReveal = (
   gridObject: GridObject
 ) => {
   const grid = gridObject.grid;
-  return grid[row]![col]!.hasRevealed || grid[row]![col]!.hasFlag;
+  return {
+    cellRevealed: grid[row]![col]!.hasRevealed,
+    cellHasFlag: grid[row]![col]!.hasFlag,
+  };
 };
 
 // check if cell is revealed => can't place flag

@@ -36,6 +36,7 @@ const Cell = ({ data, cellMutation, flagMutation, cannotClick }: CellProps) => {
   }, [value, setValue]);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (cannotClick) return;
     console.log("click", e.type, data.row, data.col);
     if (e.type === "click") {
       cellMutation(data.row, data.col);

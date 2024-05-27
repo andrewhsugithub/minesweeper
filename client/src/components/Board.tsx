@@ -9,12 +9,13 @@ interface BoardProps {
 
 const Board = ({ board }: BoardProps) => {
   const [endGame, setEndGame] = useState({ end: false, win: false });
-  const [gameBoard, setGameBoard] = useState<CellType[][]>(
-    board.grid.map((row) => [...row])
-  );
+  const [gameBoard, setGameBoard] = useState<CellType[][]>(board.grid);
 
   const flagMutation = trpc.flag.flag.useMutation();
   const cellMutation = trpc.cell.cellReveal.useMutation();
+  const isLoading = cellMutation.isPending || flagMutation.isPending;
+  const errorMessage =
+    cellMutation.error?.message || flagMutation.error?.message;
 
   const mutateFlag = (row: number, col: number) => {
     flagMutation.mutateAsync({
@@ -27,7 +28,6 @@ const Board = ({ board }: BoardProps) => {
     cellMutation.mutateAsync({
       row,
       col,
-      first: !board.firstCellSelected,
     });
   };
 
@@ -35,15 +35,15 @@ const Board = ({ board }: BoardProps) => {
     if (!flagMutation.data) return;
     const data = flagMutation.data;
     setEndGame({ end: data!.gameStatus, win: data!.hasWon });
-    setGameBoard(data!.grid.map((row) => [...row]));
-  }, [flagMutation.data]);
+    setGameBoard(data!.grid);
+  }, [flagMutation.data, setEndGame, setGameBoard]);
 
   useEffect(() => {
     if (!cellMutation.data) return;
     const data = cellMutation.data;
     setEndGame({ end: data!.gameStatus, win: data!.hasWon });
-    setGameBoard(data!.grid.map((row) => [...row]));
-  }, [cellMutation.data]);
+    setGameBoard(data!.grid);
+  }, [cellMutation.data, setEndGame, setGameBoard]);
 
   return (
     <div>
@@ -79,13 +79,24 @@ const Board = ({ board }: BoardProps) => {
           </div>
         ))}
       </div>
-      {cellMutation.isPending && <p>Loading...</p>}
-      {cellMutation.isError && (
+      {/* {cellMutation.isPending && <p>Loading...</p>} */}
+      {/* {cellMutation.isError && (
         <p className="text-red-600">{cellMutation.error?.message}</p>
-      )}
-      {flagMutation.isPending && <p>Loading...</p>}
-      {flagMutation.isError && (
+      )} */}
+      {/* {flagMutation.isPending && <p>Loading...</p>}
+      {flagMutation.isError && !cellMutation.isError && (
         <p className="text-red-600">{flagMutation.error?.message}</p>
+      )} */}
+      {/* {cellMutation.error ? (
+        <p className="text-red-600">{cellMutation.error?.message}</p>
+      ) : (
+        flagMutation.error && (
+          <p className="text-red-600">{flagMutation.error?.message}</p>
+        )
+      )} */}
+      {!endGame.end && isLoading && <p>Loading...</p>}
+      {!endGame.end && errorMessage && (
+        <p className="text-red-600">{errorMessage}</p>
       )}
       {endGame.end &&
         (endGame.win ? (

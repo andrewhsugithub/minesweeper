@@ -23,24 +23,28 @@ export const cellRouter = router({
     .mutation(({ input, ctx }) => {
       const { gridObject } = ctx;
 
-      // if first cell is selected and the game has not been revealed yet, disable the mine
-      if (input.first && !checkGameHasRevealedAlready(gridObject)) {
-        disableMine(input.row, input.col, gridObject); // if the first cell selected is a mine, disable it, else disable the redundant mine
-      } else if (!input.first && !checkGameHasRevealedAlready(gridObject)) {
-        disableMine(input.row, input.col, gridObject);
+      const { cellHasFlag, cellRevealed } = checkCanReveal(
+        input.row,
+        input.col,
+        gridObject
+      );
+      // if the cell has already been revealed, throw TRPCError
+      if (cellHasFlag || cellRevealed) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: cellRevealed
+            ? "Cell has already been revealed"
+            : "Cell has a flag placed on it",
+        });
       }
+
+      // if first cell is selected and the game has not been revealed yet, disable the mine
+      if (!checkGameHasRevealedAlready(gridObject))
+        disableMine(input.row, input.col, gridObject); // if the first cell selected is a mine, disable it, else disable the redundant mine
 
       // if the cell is a mine, game over
       if (checkCellIsMine(input.row, input.col, gridObject)) {
         return { gameStatus: true, hasWon: false, grid: gridObject.grid };
-      }
-
-      // if the cell has already been revealed, throw TRPCError
-      if (checkCanReveal(input.row, input.col, gridObject)) {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Cell has already been revealed",
-        });
       }
 
       cellReveal(input.row, input.col, gridObject);

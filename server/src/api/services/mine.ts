@@ -41,6 +41,7 @@ export const disableMine = (
   const grid = gridObject.grid;
 
   console.log("disable mine", row, col);
+  gridObject.firstCellSelected = true;
   let [r, c] = [row, col];
   // check if first cell is mine, if not disable the redundant mine
   if (!grid[row]![col]!.isMine) [r, c] = gridObject.redundantMineCell!;
