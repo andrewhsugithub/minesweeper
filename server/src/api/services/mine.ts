@@ -19,13 +19,13 @@ export const generateMines = (
     Math.floor(redundantMine / cols),
     redundantMine % cols,
   ];
-  console.log(
-    "redundant mine",
-    redundantMine,
-    Math.floor(redundantMine / cols),
-    redundantMine % cols,
-    mines
-  );
+  // console.log(
+  //   "redundant mine",
+  //   redundantMine,
+  //   Math.floor(redundantMine / cols),
+  //   redundantMine % cols,
+  //   mines
+  // );
 
   return (idx: number) => ({
     isMine: mines.has(idx),
